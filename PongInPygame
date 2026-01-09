@@ -3,6 +3,8 @@ pygame.init()#initialisation
 WINDOW = pygame.display.set_mode((600,600))#window resolution
 CLOCK = pygame.time.Clock()#initialising fps functionalilty
 PONG=[300,300]
+BOTTOM_PADDLE=[180,580]
+TOP_PADDLE=[180,10]
 PONGVELOCITYX=-10
 PONGVELOCITYY=-5
 
@@ -13,8 +15,33 @@ while RENDERING==True:
 
     WINDOW.fill((0, 0, 0))
 
+    KEYDATA = pygame.key.get_pressed()
+
+
+    if KEYDATA[pygame.K_LEFT]==True:
+        BOTTOM_PADDLE[0]=BOTTOM_PADDLE[0]-10
+    
+    if KEYDATA[pygame.K_RIGHT]==True:
+        BOTTOM_PADDLE[0]=BOTTOM_PADDLE[0]+10
+
+    if KEYDATA[pygame.K_z]==True:
+        TOP_PADDLE[0]=TOP_PADDLE[0]-10
+    
+    if KEYDATA[pygame.K_x]==True:
+        TOP_PADDLE[0]=TOP_PADDLE[0]+10
+
+    
+
+
     PONG[1]=PONG[1]+PONGVELOCITYY
     PONG[0]=PONG[0]+PONGVELOCITYX
+
+    BOTTOM_PADDLE_RECT=pygame.Rect(BOTTOM_PADDLE[0],BOTTOM_PADDLE[1],100,10)
+    pygame.draw.rect(WINDOW, (0,0,255),BOTTOM_PADDLE_RECT)#bottom paddle rendering
+
+    TOP_PADDLE_RECT=pygame.Rect(TOP_PADDLE[0],TOP_PADDLE[1],100,10)
+    pygame.draw.rect(WINDOW, (0,0,255),TOP_PADDLE_RECT)#bottom paddle rendering
+
 
     PONG_BALL=pygame.Rect(PONG[0],PONG[1],10,10)#pong loading and drawing
     pygame.draw.rect(WINDOW, (0, 255, 0),PONG_BALL)#pong rendering
@@ -32,6 +59,13 @@ while RENDERING==True:
     pygame.draw.rect(WINDOW, (0, 200, 0),TOP_BORDER)#top border rendering
     BOTTOM_BORDER=pygame.Rect(0,590,600,10)#bottom border loading and drawing
     pygame.draw.rect(WINDOW, (0, 200, 0),BOTTOM_BORDER)#bottom border rendering
+
+
+    if PONG_BALL.colliderect(BOTTOM_PADDLE_RECT):#bottom paddle collision detection
+        PONGVELOCITYY=-PONGVELOCITYY
+
+    if PONG_BALL.colliderect(TOP_PADDLE_RECT):#bottom paddle collision detection
+        PONGVELOCITYY=-PONGVELOCITYY
     
 
     if PONG_BALL.colliderect(LEFT_BORDER) or PONG_BALL.colliderect(RIGHT_BORDER):#left and right border collision detection
