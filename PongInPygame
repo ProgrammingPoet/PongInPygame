@@ -2,6 +2,10 @@ import pygame
 pygame.init()#initialisation
 WINDOW = pygame.display.set_mode((600,600))#window resolution
 CLOCK = pygame.time.Clock()#initialising fps functionalilty
+PONG=[300,300]
+PONGVELOCITYX=-10
+PONGVELOCITYY=-5
+
 
 #game loop
 RENDERING=True
@@ -9,19 +13,32 @@ while RENDERING==True:
 
     WINDOW.fill((0, 0, 0))
 
+    PONG[1]=PONG[1]+PONGVELOCITYY
+    PONG[0]=PONG[0]+PONGVELOCITYX
 
-    
+    PONG_BALL=pygame.Rect(PONG[0],PONG[1],10,10)#pong loading and drawing
+    pygame.draw.rect(WINDOW, (0, 255, 0),PONG_BALL)#pong rendering
+
+
+
 
     CLOCK.tick(60)#FPS lock
 
-    BORDER=pygame.Rect(0,0,10,600)#left border loading and drawing
-    pygame.draw.rect(WINDOW, (0, 200, 0),BORDER)#left border rendering
-    BORDER=pygame.Rect(590,0,10,600)#right border loading and drawing
-    pygame.draw.rect(WINDOW, (0, 200, 0),BORDER)#right border rendering
-    BORDER=pygame.Rect(0,0,600,10)#top border loading and drawing
-    pygame.draw.rect(WINDOW, (0, 200, 0),BORDER)#top border rendering
-    BORDER=pygame.Rect(0,590,600,10)#bottom border loading and drawing
-    pygame.draw.rect(WINDOW, (0, 200, 0),BORDER)#bottom border rendering
+    LEFT_BORDER=pygame.Rect(0,0,10,600)#left border loading and drawing
+    pygame.draw.rect(WINDOW, (0, 200, 0),LEFT_BORDER)#left border rendering
+    RIGHT_BORDER=pygame.Rect(590,0,10,600)#right border loading and drawing
+    pygame.draw.rect(WINDOW, (0, 200, 0),RIGHT_BORDER)#right border rendering
+    TOP_BORDER=pygame.Rect(0,0,600,10)#top border loading and drawing
+    pygame.draw.rect(WINDOW, (0, 200, 0),TOP_BORDER)#top border rendering
+    BOTTOM_BORDER=pygame.Rect(0,590,600,10)#bottom border loading and drawing
+    pygame.draw.rect(WINDOW, (0, 200, 0),BOTTOM_BORDER)#bottom border rendering
+    
+
+    if PONG_BALL.colliderect(LEFT_BORDER) or PONG_BALL.colliderect(RIGHT_BORDER):#left and right border collision detection
+        PONGVELOCITYX=-PONGVELOCITYX
+    if PONG_BALL.colliderect(TOP_BORDER) or PONG_BALL.colliderect(BOTTOM_BORDER):#top and bottom border collision detection
+        PONGVELOCITYY=-PONGVELOCITYY
+
 
     for event in pygame.event.get():#checks for inputs
         #quit from x button functionality
